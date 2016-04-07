@@ -1,4 +1,4 @@
-Below is the readme for the Raspberry Pi + Alexa Voice Service repository that I forked from. PLEASE get that to work first BEFORE making any changes and if it doesn't work, see that repository for help.
+Below is the readme for the Raspberry Pi + Alexa Voice Service repository that I forked from. PLEASE get that to work first BEFORE making any changes and if it doesn't work, see that repository for help. This is my first actual GitHub project, so if something is wrong, doesn't work, etc. please let me know and I will try to help. I also do not know that much about any of the legal consequences and I'm not claiming any of the code as my own except for the few things that I will have you change. Feel free to fork, improve, do whatever wtih the code as long as it is OK with Amazon and Pi4j legally. This code is also far from perfect. I just wanted something that works and if you can improve upon it please do and I would really appreciate it if you could explain and show me what you did. If you already have the Amazon version working, go to the bottom of their part of the readme.
 
 # Project: Raspberry Pi + Alexa Voice Service
 
@@ -691,4 +691,72 @@ https://www.hackster.io/Anwaarullah/sharing-wifi-with-raspberry-pi-using-a-lan-c
 ### What does the ssl.cnf file look like?
 [Here's](https://gist.github.com/ajotwani/a0d54110a968c984fd0b) what the ssl.cnf file would look like, replacing country, state, locality with your respective info. 
 
+#Start Here
+This guide will require the pi to be connected to the internet.
 
+The first thing that you will have to do is install the [Pi4J project](http://pi4j.com/install.html). An easy way is to just put this command in a terminal. 
+
+    curl -s get.pi4j.com | sudo bash
+
+Next we will have to modify the AVSApp.java file to add the listeners for the button. This file is located in alexa-avs-raspberry-pi/samples/javaclient/src/main/java/com/amazon/alexa/avs/
+Alternatively, you could just download my version to replace the existing one.
+
+Add in these imports.
+
+    import com.pi4j.io.gpio.GpioController;
+    import com.pi4j.io.gpio.GpioFactory;
+    import com.pi4j.io.gpio.GpioPinDigitalInput;
+    import com.pi4j.io.gpio.PinPullResistance;
+    import com.pi4j.io.gpio.RaspiPin;
+    import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
+    import com.pi4j.io.gpio.event.GpioPinListenerDigital;
+
+Then go to
+
+    private void addActionField() {
+        final RecordingRMSListener rmsListener = this;
+        actionButton = new JButton(START_LABEL);
+        actionButton.setEnabled(true);
+        
+ and add this code to create the button and listener.
+ 
+        final GpioController gpio = GpioFactory.getInstance();
+    
+        final GpioPinDigitalInput myButton = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, PinPullResistance.PULL_DOWN);
+        myButton.addListener(new GpioPinListenerDigital() {
+          @Override
+          public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event){
+             actionButton.doClick();
+          }
+        });
+ 
+ You can look at the Pi4J website if you want to change how the button would be wired up. I just used the way that was given in [this example.](http://pi4j.com/example/listener.html) The wiring diagram is at the bottom of the page.
+ 
+ Now you need to tell mvn to include pi4j when it builds the project. Go to
+ 
+     <REFERENCE_IMPLEMENTATION>/samples/javaclient/pom.xml
+just like you did for step **7.3** in the Amazon version. Add this dependency
+
+    <dependency>
+        <groupId>com.pi4j</groupId>
+        <artifactId>pi4j-core</artifactId>
+        <version>1.0</version>
+    </dependency>
+    
+right above the one you added for step **7.3.**
+
+Once you have done all of this and wired the pi up according to the [wiring diagram](http://pi4j.com/example/listener.html#Wiring_Diagram) you are ready to build and run.
+
+Get your companion service running according to the steps in the Amazon verion.
+Now navigate to
+
+    <REFERENCE_IMPLEMENTATION>/samples/javaclient/
+and run
+
+    mvn install
+then if you see Build Success run
+
+    sudo env "PATH=$PATH" mvn exec:exec
+you have to run as root because wiringpi requires root.
+
+To use the button, all you have to do is press and hold what you want to record and then let go when you are done talking. Due to the way it's poorly coded (you're welcome), you could also quickly press the button (press down then let go quickly) to start recording and then press quickly again when you are done. Everything else is the same.
