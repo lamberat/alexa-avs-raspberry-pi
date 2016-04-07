@@ -1,3 +1,5 @@
+Below is the readme for the Raspberry Pi + Alexa Voice Service repository that I forked from. PLEASE get that to work first BEFORE making any changes and if it doesn't work, see that repository for help.
+
 # Project: Raspberry Pi + Alexa Voice Service
 
 ## About the Project
