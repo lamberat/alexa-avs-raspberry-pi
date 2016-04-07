@@ -735,7 +735,7 @@ Then go to
  Now you need to tell mvn to include pi4j when it builds the project. Go to
  
      <REFERENCE_IMPLEMENTATION>/samples/javaclient/pom.xml
-just like you did for step **7.3** in the Amazon version. Add this dependency
+just like you did for step **7.3** in the Amazon version. Add this dependency [or download my version](https://github.com/Eddie-Hartman/alexa-avs-raspberry-pi-button/blob/20564a0b60cbc31833dfb2be6fb8375d48f5eaf0/samples/javaclient/pom.xml)
 
     <dependency>
         <groupId>com.pi4j</groupId>
