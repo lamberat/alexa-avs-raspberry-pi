@@ -703,13 +703,10 @@ Alternatively, you could just [download my version](https://github.com/Eddie-Har
 
 Add in these imports.
 
-    import com.pi4j.io.gpio.GpioController;
-    import com.pi4j.io.gpio.GpioFactory;
-    import com.pi4j.io.gpio.GpioPinDigitalInput;
-    import com.pi4j.io.gpio.PinPullResistance;
-    import com.pi4j.io.gpio.RaspiPin;
+    import com.pi4j.io.gpio.*;
     import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
     import com.pi4j.io.gpio.event.GpioPinListenerDigital;
+    import com.pi4j.wiringpi.GpioUtil;
 
 Then go to
 
@@ -720,6 +717,7 @@ Then go to
         
  and add this code to create the button and listener.
  
+        GpioUtil.enableNonPrivilegedAccess();
         final GpioController gpio = GpioFactory.getInstance();
     
         final GpioPinDigitalInput myButton = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, PinPullResistance.PULL_DOWN);
@@ -740,10 +738,30 @@ just like you did for step **7.3** in the Amazon version. Add this dependency [o
     <dependency>
         <groupId>com.pi4j</groupId>
         <artifactId>pi4j-core</artifactId>
-        <version>1.0</version>
+        <version>1.1-SNAPSHOT</version>
     </dependency>
     
 right above the one you added for step **7.3.**
+
+You also need to add this
+
+    <repositories>
+    	<repository>
+    		<id>oss-snapshots-repo</id>
+    		<name>Sonatype OSS Maven Repository</name>
+    	    	<url>https://oss.sonatype.org/content/groups/public</url>
+    	    	<snapshots>
+    		    	<enabled>true</enabled>
+    			<updatePolicy>always</updatePolicy>
+    		</snapshots>
+    	</repository>
+    </repositories>
+
+above the first 
+
+    <dependency>
+
+tag.
 
 Once you have done all of this and wired the pi up according to the [wiring diagram](http://pi4j.com/example/listener.html#Wiring_Diagram) you are ready to build and run.
 
@@ -756,7 +774,7 @@ and run
     mvn install
 then if you see Build Success run
 
-    sudo env "PATH=$PATH" mvn exec:exec
-you have to run as root because wiringpi requires root.
+    mvn exec:exec
+This no longer requires root because we're using the Pi4J snapshot.
 
 To use the button, all you have to do is press and hold what you want to record and then let go when you are done talking. Due to the way it's poorly coded (you're welcome), you could also quickly press the button (press down then let go quickly) to start recording and then press quickly again when you are done. Everything else is the same.
