@@ -694,11 +694,7 @@ https://www.hackster.io/Anwaarullah/sharing-wifi-with-raspberry-pi-using-a-lan-c
 #Start Here
 This guide will require the pi to be connected to the internet.
 
-The first thing that you will have to do is install the [Pi4J project](http://pi4j.com/install.html). An easy way is to just put this command in a terminal. 
-
-    curl -s get.pi4j.com | sudo bash
-
-Next we will have to modify the AVSApp.java file to add the listeners for the button. This file is located in alexa-avs-raspberry-pi/samples/javaclient/src/main/java/com/amazon/alexa/avs/
+First we will have to modify the AVSApp.java file to add the listeners for the button. This file is located in alexa-avs-raspberry-pi/samples/javaclient/src/main/java/com/amazon/alexa/avs/
 Alternatively, you could just [download my version](https://github.com/Eddie-Hartman/alexa-avs-raspberry-pi-button/blob/master/samples/javaclient/src/main/java/com/amazon/alexa/avs/AVSApp.java) to replace the existing one.
 
 Add in these imports.
