@@ -19,18 +19,6 @@
     <log4j.version>2.3</log4j.version>
   </properties>
   
-  <repositories>
-	  <repository>
-		  <id>oss-snapshots-repo</id>
-		  <name>Sonatype OSS Maven Repository</name>
-		  <url>https://oss.sonatype.org/content/groups/public</url>
-		  <snapshots>
-			  <enabled>true</enabled>
-			  <updatePolicy>always</updatePolicy>
-		  </snapshots>
-	  </repository>
-  </repositories>
-  
   <dependencies>
     <dependency>
       <groupId>commons-codec</groupId>
@@ -161,8 +149,9 @@
     <dependency>
       <groupId>com.pi4j</groupId>
       <artifactId>pi4j-core</artifactId>
-      <version>1.1-SNAPSHOT</version>
-    </dependency><dependency>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
       <groupId>net.java.dev.jna</groupId>
       <artifactId>jna</artifactId>
       <version>4.1.0</version>
